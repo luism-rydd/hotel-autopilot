@@ -1,35 +1,39 @@
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import type { Database } from '@/lib/types';
 
-const rooms = Array.from({ length: 43 }, (_, i) => ({
-  id: i + 1,
-  number: `Hab ${i + 1}`,
-  status: ['clean', 'dirty', 'occupied'][Math.floor(Math.random() * 3)],
-}));
+type Room = Database['public']['Tables']['rooms']['Row'];
 
-export function RoomsTable() {
+type RoomsTableProps = {
+  rooms: Room[];
+};
+
+export function RoomsTable({ rooms }: RoomsTableProps) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Habitación</TableHead>
-          <TableHead>Estado</TableHead>
-          <TableHead>Acciones</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rooms.map((room) => (
-          <TableRow key={room.id}>
-            <TableCell>{room.number}</TableCell>
-            <TableCell>
-              <Badge variant={room.status === 'clean' ? 'default' : 'destructive'}>
-                {room.status}
-              </Badge>
-            </TableCell>
-            <TableCell>Check-in</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table className="min-w-full text-sm">
+        <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th className="px-4 py-3">Room</th>
+            <th className="px-4 py-3">Status</th>
+            <th className="px-4 py-3">Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rooms.map((room) => (
+            <tr key={room.id} className="border-t border-slate-100">
+              <td className="px-4 py-3">{room.name}</td>
+              <td className="px-4 py-3">{room.status}</td>
+              <td className="px-4 py-3">{room.capacity}</td>
+            </tr>
+          ))}
+          {rooms.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="px-4 py-5 text-center text-slate-500">
+                No rooms available.
+              </td>
+            </tr>
+          ) : null}
+        </tbody>
+      </table>
+    </div>
   );
 }
