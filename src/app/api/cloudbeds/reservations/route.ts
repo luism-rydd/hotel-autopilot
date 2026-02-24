@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 import { createServiceSupabaseClient } from '@/lib/supabase-service';
+
+const statusSchema = z.enum(['pending', 'confirmed', 'checked_in', 'checked_out', 'cancelled']);
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +19,10 @@ export async function GET(request: Request) {
       .select('id, room_id, guest, checkin, checkout, status, rooms(name, capacity)')
       .order('checkin', { ascending: true });
 
-    if (status) query = query.eq('status', status);
+    if (status) {
+      const parsed = statusSchema.safeParse(status);
+      if (parsed.success) query = query.eq('status', parsed.data);
+    }
     if (from) query = query.gte('checkin', from);
     if (to) query = query.lte('checkout', to);
 

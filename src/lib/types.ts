@@ -22,6 +22,7 @@ export type Database = {
           status?: 'clean' | 'dirty' | 'occupied' | 'maintenance';
           capacity?: number;
         };
+        Relationships: [];
       };
       reservations: {
         Row: {
@@ -48,6 +49,7 @@ export type Database = {
           checkout?: string;
           status?: 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled';
         };
+        Relationships: [];
       };
       housekeeping: {
         Row: {
@@ -71,6 +73,7 @@ export type Database = {
           assigned?: string;
           status?: 'pending' | 'in_progress' | 'done';
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

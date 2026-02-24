@@ -87,7 +87,7 @@ export default function DashboardPage() {
       return;
     }
 
-    setReservations(data ?? []);
+    setReservations((data as unknown as Reservation[]) ?? []);
   }, [supabase]);
 
   const loadAll = useCallback(async () => {
@@ -100,19 +100,19 @@ export default function DashboardPage() {
     if (roomsResult.error) {
       setMessage(`Rooms error: ${roomsResult.error.message}`);
     } else {
-      setRooms(roomsResult.data ?? []);
+      setRooms((roomsResult.data as unknown as Room[]) ?? []);
     }
 
     if (reservationsResult.error) {
       setMessage(`Reservations error: ${reservationsResult.error.message}`);
     } else {
-      setReservations(reservationsResult.data ?? []);
+      setReservations((reservationsResult.data as unknown as Reservation[]) ?? []);
     }
 
     if (housekeepingResult.error) {
       setMessage(`Housekeeping error: ${housekeepingResult.error.message}`);
     } else {
-      setHousekeeping(housekeepingResult.data ?? []);
+      setHousekeeping((housekeepingResult.data as unknown as Housekeeping[]) ?? []);
     }
   }, [supabase]);
 
